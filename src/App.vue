@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+
+    <section class="row text-center">
+      <img class="logo" :src="pokevue" />
+    </section>
     <section class="row">
         <div class="small-6 columns">
             <div class="pokemon-section">
@@ -83,6 +87,8 @@
 
 <script>
 
+import pokevue from './assets/pokevue.png'
+
 export default {
   name: "app",
   data: function() { 
@@ -113,7 +119,8 @@ export default {
         {name:'Venusaur', url: 'https://cdn.discordapp.com/emojis/396694675735445505.gif?v=1'},
         {name:'Ursaring', url: 'https://cdn.discordapp.com/emojis/396699699320717312.gif?v=1'},
         {name:'Blissey', url:'https://cdn.discordapp.com/emojis/396699701254160384.gif?v=1'}
-      ]
+      ],
+      pokevue: pokevue
     }
   },
   methods: {

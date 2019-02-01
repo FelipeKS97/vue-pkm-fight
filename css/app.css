@@ -46,6 +46,10 @@
     background-color: #ffc0c1;
 }
 
+.logo {
+    width: 175px;
+}
+
 .button {
     font-size: 20px;
     background-color: #eee;
