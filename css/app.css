@@ -1,5 +1,6 @@
 .text-center {
     text-align: center;
+    color: white;
 }
 
 .healthbar {
@@ -51,6 +52,19 @@
     padding: 12px;
     box-shadow: 0 1px 1px black;
     margin: 10px;
+}
+
+.pokemon-section {
+    text-align: center;
+}
+
+#player-pokemon {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
 }
 
 #start-game {

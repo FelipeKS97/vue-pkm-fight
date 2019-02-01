@@ -2,20 +2,50 @@
   <div id="app">
     <section class="row">
         <div class="small-6 columns">
-            <h1 class="text-center">YOU</h1>
+            <div class="pokemon-section">
+              <img id="player-pokemon" :src="playerPokemon.url" />
+            </div>
+            <h1 class="text-center">YOU {{playerPokemon.name}}</h1>
             <div class="healthbar">
-                <div 
-                  class="healthbar text-center" 
-                  style="background-color: green; margin: 0; color: white;"
-                  :style="{width: playerHealth + '%'}"
-                >
-                  {{ playerHealth }}
-                </div>
+              <div>
+                <select v-if="!gameIsRunning" id="player" @change="selectPokemon">
+                  <option selected value=""></option>
+                  <option 
+                    :key="pkm.url" 
+                    v-for="pkm in pkmData" 
+                    :value="pkm.url"
+                  >
+                    {{pkm.name}}
+                  </option>
+                </select>
+              </div>
+              <div 
+                class="healthbar text-center" 
+                style="background-color: green; margin: 0; color: white;"
+                :style="{width: playerHealth + '%'}"
+              >
+                {{ playerHealth }}
+              </div>
             </div>
         </div>
         <div class="small-6 columns">
-            <h1 class="text-center">MONSTER</h1>
+            <div class="pokemon-section">
+              <img :src="enemyPokemon.url" />
+            </div>
+            <h1 class="text-center">ENEMY {{enemyPokemon.name}}  </h1>
             <div class="healthbar">
+              <div>
+                <select v-if="!gameIsRunning" id="enemy" @change="selectPokemon">
+                  <option selected value=""></option>
+                  <option
+                    :key="pkm.url"
+                    v-for="pkm in pkmData" 
+                    :value="pkm.url"
+                  >
+                    {{pkm.name}}
+                  </option>
+                </select>
+              </div>
                 <div 
                   class="healthbar text-center" 
                   style="background-color: green; margin: 0; color: white;"
@@ -59,14 +89,42 @@ export default {
     return {
       playerHealth: 100,
       enemyHealth: 100,
-      gameIsRunning: false
+      playerPokemon: {
+        name: '',
+        url:''
+      },
+      enemyPokemon: {
+        name: '',
+        url:''
+      },
+      gameIsRunning: false,
+      pkmData: [
+        {name:'Tyranitar', url: 'https://cdn.discordapp.com/emojis/396699704118738955.gif?v=1'},
+        {name:'Snorlax', url: 'https://cdn.discordapp.com/emojis/396695217019027456.gif?v=1'},
+        {name:'Dragonite', url:'https://cdn.discordapp.com/emojis/396695210895081472.gif?v=1'},
+        {name:'Hariyama', url: 'https://cdn.discordapp.com/emojis/396700081857757184.gif?v=1'},
+        {name:'Pinsir', url: 'https://cdn.discordapp.com/emojis/396695206331940864.gif?v=1'},
+        {name:'Gyarados', url:' https://cdn.discordapp.com/emojis/396695217128079360.gif?v=1'},
+        {name:'Arcanine', url: 'https://cdn.discordapp.com/emojis/396694941340008448.gif?v=1'},
+        {name:'Rhydon', url: 'https://cdn.discordapp.com/emojis/396695213017399296.gif?v=1'},
+        {name:'Lapras', url: 'https://cdn.discordapp.com/emojis/396695214905098241.gif?v=1'},
+        {name:'Blastoise', url: 'https://cdn.discordapp.com/emojis/396694677157576704.gif?v=1'},
+        {name:'Charizard', url: 'https://cdn.discordapp.com/emojis/403110375534493696.gif?v=1'},
+        {name:'Venusaur', url: 'https://cdn.discordapp.com/emojis/396694675735445505.gif?v=1'},
+        {name:'Ursaring', url: 'https://cdn.discordapp.com/emojis/396699699320717312.gif?v=1'},
+        {name:'Blissey', url:'https://cdn.discordapp.com/emojis/396699701254160384.gif?v=1'}
+      ]
     }
   },
   methods: {
     gameStart: function() {
-      this.gameIsRunning = true
-      this.playerHealth = 100
-      this.enemyHealth = 100
+      if(this.playerPokemon.url === '' && this.enemyPokemon.url === '' ) {
+        alert('Select Pokemons for the battle!')
+      } else {
+        this.gameIsRunning = true
+        this.playerHealth = 100
+        this.enemyHealth = 100
+      }
     },
     attack: function() {
       let max = 10
@@ -76,10 +134,21 @@ export default {
       console.log(damage)
       this.enemyHealth -= damage;
 
+      if(this.enemyHealth <= 0 ) {
+        alert('Victory!')
+        this.gameIsRunning = false
+        return;
+      }
+
       max = 12
       min = 5
       damage = Math.floor(Math.random()*(max-min+1)+min);
       this.playerHealth -= damage;
+
+      if(this.playerHealth <= 0 ) {
+        alert('Loser... Try again.')
+        this.gameIsRunning = false
+      }
     },
     spAttack: function() {
       
@@ -92,6 +161,13 @@ export default {
       this.playerHealth = 100
       this.enemyHealth = 100
     },
+    selectPokemon: function(event) {
+      if(event.target.id === 'player') {
+        this.playerPokemon.url = event.target.value
+      } else {
+        this.enemyPokemon.url = event.target.value   
+      }
+    }
   },
 };
 </script>
