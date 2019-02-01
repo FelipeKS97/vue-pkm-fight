@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     gameStart: function() {
-      if(this.playerPokemon.url === '' && this.enemyPokemon.url === '' ) {
+      if(this.playerPokemon.url === '' || this.enemyPokemon.url === '' ) {
         alert('Select Pokemons for the battle!')
       } else {
         this.gameIsRunning = true
