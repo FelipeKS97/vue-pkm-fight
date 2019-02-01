@@ -135,29 +135,22 @@ export default {
     },
     attack: function() {
 
-      this.enemyHealth -= this.calculateDamage(3,10);
+      this.enemyHealth -= this.calculateDamage(4,11);
 
       if(this.checkWin()) {
         return;
       }
-
-      if(this.enemyHealth <= 0 ) {
-        alert('Victory!')
-        this.gameIsRunning = false
-        return;
-      }
-
       this.playerHealth -= this.calculateDamage(5,12);
-
-      if(this.playerHealth <= 0 ) {
-        alert('Loser... Try again.')
-        this.gameIsRunning = false
-      }
-
       this.checkWin();
     },
     spAttack: function() {
-      
+
+      this.enemyHealth -= this.calculateDamage(10,20);
+      if(this.checkWin()) {
+        return;
+      }
+      this.playerHealth -= this.calculateDamage(10,20);
+      this.checkWin();
     },
     heal: function() {
       
