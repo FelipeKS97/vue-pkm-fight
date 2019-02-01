@@ -140,8 +140,7 @@ export default {
       if(this.checkWin()) {
         return;
       }
-      this.playerHealth -= this.calculateDamage(5,12);
-      this.checkWin();
+       this.enemyAttack(5,12);
     },
     spAttack: function() {
 
@@ -149,11 +148,17 @@ export default {
       if(this.checkWin()) {
         return;
       }
-      this.playerHealth -= this.calculateDamage(10,20);
-      this.checkWin();
+
+      this.enemyAttack(10,20);
     },
     heal: function() {
+      if(this.playerHealth <= 90) {
+        this.playerHealth += 10
+      } else {
+        this.playerHealth = 100
+      }
       
+      this.enemyAttack(6,13)
     },
     giveUp: function() {
       this.gameIsRunning = false
@@ -161,7 +166,11 @@ export default {
       this.enemyHealth = 100
     },
     calculateDamage: function(min, max) {
-      return Math.floor(Math.random()*(max-min+1)+min);
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+    enemyAttack: function(min, max) {
+      this.playerHealth -= this.calculateDamage(min, max);
+      this.checkWin();
     },
     checkWin: function() {
       if(this.enemyHealth <= 0 ) {
