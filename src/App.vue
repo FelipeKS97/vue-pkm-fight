@@ -134,12 +134,12 @@ export default {
       }
     },
     attack: function() {
-      let max = 10
-      let min = 3
-      let damage = Math.floor(Math.random()*(max-min+1)+min);
-      //damage = Math.max(Math.floor(Math.random * max) + 1, min)
-      console.log(damage)
-      this.enemyHealth -= damage;
+
+      this.enemyHealth -= this.calculateDamage(3,10);
+
+      if(this.checkWin()) {
+        return;
+      }
 
       if(this.enemyHealth <= 0 ) {
         alert('Victory!')
@@ -147,15 +147,14 @@ export default {
         return;
       }
 
-      max = 12
-      min = 5
-      damage = Math.floor(Math.random()*(max-min+1)+min);
-      this.playerHealth -= damage;
+      this.playerHealth -= this.calculateDamage(5,12);
 
       if(this.playerHealth <= 0 ) {
         alert('Loser... Try again.')
         this.gameIsRunning = false
       }
+
+      this.checkWin();
     },
     spAttack: function() {
       
@@ -167,6 +166,29 @@ export default {
       this.gameIsRunning = false
       this.playerHealth = 100
       this.enemyHealth = 100
+    },
+    calculateDamage: function(min, max) {
+      return Math.floor(Math.random()*(max-min+1)+min);
+    },
+    checkWin: function() {
+      if(this.enemyHealth <= 0 ) {
+        if(confirm("You have won! New Game?")) {
+          this.gameStart()
+        } else {
+          this.gameIsRunning = false
+        }
+        return true;
+      } else if(this.playerHealth <= 0) {
+          if(confirm("You've lost! New Game?")) {
+            this.gameStart()
+          } else {
+            gameIsRunning = false
+          }
+        return true;
+      }
+
+      return false;
+
     },
     selectPokemon: function(event) {
       if(event.target.id === 'player') {
