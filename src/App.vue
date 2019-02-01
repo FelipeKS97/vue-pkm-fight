@@ -11,7 +11,7 @@
             </div>
             <h1 class="text-center">YOU {{playerPokemon.name}}</h1>
             <div class="healthbar">
-              <div>
+              <div class="main-selection">
                 <select v-if="!gameIsRunning" id="player" @change="selectPokemon">
                   <option selected value=""></option>
                   <option 
@@ -25,7 +25,7 @@
               </div>
               <div 
                 class="healthbar text-center" 
-                style="background-color: green; margin: 0; color: white;"
+                style="background-color: #41b883; margin: 0; color: white;"
                 :style="{width: playerHealth + '%'}"
               >
                 {{ playerHealth }}
@@ -38,7 +38,7 @@
             </div>
             <h1 class="text-center">ENEMY {{enemyPokemon.name}}  </h1>
             <div class="healthbar">
-              <div>
+              <div class="main-selection">
                 <select v-if="!gameIsRunning" id="enemy" @change="selectPokemon">
                   <option selected value=""></option>
                   <option
@@ -52,7 +52,7 @@
               </div>
                 <div 
                   class="healthbar text-center" 
-                  style="background-color: green; margin: 0; color: white;"
+                  style="background-color: #41b883; margin: 0; color: white;"
                   :style="{width: enemyHealth + '%'}"
                 >
                  {{ enemyHealth }}
@@ -73,11 +73,14 @@
             <button @click="giveUp" class="button" id="give-up">GIVE UP</button>
         </div>
     </section>
-    <section class="row log">
+    <section class="row log" v-if="turns.length > 0">
         <div class="small-12 columns">
             <ul>
-                <li>
-
+                <li 
+                  v-for="turn in turns"
+                  :class="{'player-turn': turn.isPlayer, 'enemy-turn': !turn.isPlayer}"
+                >
+                  {{turn.text}}
                 </li>
             </ul>
         </div>
@@ -104,6 +107,7 @@ export default {
         url:''
       },
       gameIsRunning: false,
+      turns: [],
       pkmData: [
         {name:'Tyranitar', url: 'https://cdn.discordapp.com/emojis/396699704118738955.gif?v=1'},
         {name:'Snorlax', url: 'https://cdn.discordapp.com/emojis/396695217019027456.gif?v=1'},
@@ -131,11 +135,19 @@ export default {
         this.gameIsRunning = true
         this.playerHealth = 100
         this.enemyHealth = 100
+        this.turns = []
       }
     },
     attack: function() {
 
-      this.enemyHealth -= this.calculateDamage(4,11);
+      let damage = this.calculateDamage(4,11);
+
+      this.enemyHealth -= damage
+
+      this.turns.unshift({
+        isPlayer: true,
+        text: 'Player Pokemon hits Enemy for' + damage + 'points!'
+      })
 
       if(this.checkWin()) {
         return;
@@ -143,8 +155,12 @@ export default {
        this.enemyAttack(5,12);
     },
     spAttack: function() {
-
-      this.enemyHealth -= this.calculateDamage(10,20);
+      let damage = this.calculateDamage(10,20);
+      this.enemyHealth -= damage
+      this.turns.unshift({
+        isPlayer: true,
+        text: 'Player Pokemon hits SP on Enemy for' + damage + 'points!'
+      })
       if(this.checkWin()) {
         return;
       }
@@ -157,11 +173,17 @@ export default {
       } else {
         this.playerHealth = 100
       }
+
+      this.turns.unshift({
+        isPlayer: true,
+        text: 'Player Pokemon heals for 10 points!'
+      })
       
       this.enemyAttack(6,13)
     },
     giveUp: function() {
       this.gameIsRunning = false
+      this.turns = []
       this.playerHealth = 100
       this.enemyHealth = 100
     },
@@ -169,8 +191,13 @@ export default {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
     enemyAttack: function(min, max) {
-      this.playerHealth -= this.calculateDamage(min, max);
+      let damage = this.calculateDamage(min, max);
+      this.playerHealth -= damage
       this.checkWin();
+      this.turns.unshift({
+        isPlayer: false,
+        text: 'Enemy Pokemon hits Player for ' + damage + ' points!'
+      })
     },
     checkWin: function() {
       if(this.enemyHealth <= 0 ) {

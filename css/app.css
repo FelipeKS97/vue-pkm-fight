@@ -26,6 +26,20 @@
     font-size: 22px;
 }
 
+.main-selection {
+    box-shadow: 1px 1px 11px #330033;
+    background: #34495e;
+}
+
+.main-selection select {
+    border: 0;
+    color: #EEE;
+    background: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    background: #34495e;
+ }
+
 .log ul {
     list-style: none;
     font-weight: bold;
@@ -41,7 +55,7 @@
     background-color: #e4e8ff;
 }
 
-.log ul .monster-turn {
+.log ul .enemy-turn {
     color: red;
     background-color: #ffc0c1;
 }
@@ -72,11 +86,11 @@
 }
 
 #start-game {
-    background-color: #aaffb0;
+    background-color: #42dd97;
 }
 
 #start-game:hover {
-    background-color: #76ff7e;
+    background-color: #33b178;
 }
 
 #attack {
@@ -96,11 +110,11 @@
 }
 
 #heal {
-    background-color: #aaffb0;
+    background-color: #42dd97;
 }
 
 #heal:hover {
-    background-color: #76ff7e;
+    background-color: #33b178;
 }
 
 #give-up {
